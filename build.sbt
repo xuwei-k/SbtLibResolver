@@ -18,6 +18,8 @@ libraryDependencies ++= Seq(
   ,"org.specs2" %% "specs2-scalaz-core" % "5.1-SNAPSHOT" % "test"
 )
 
+addCompilerPlugin("org.scala-tools.sxr" %% "sxr" % "0.2.7")
+
 resolvers ++= Seq(
   "jboss.com" at "http://repository.jboss.com/maven2/"
   ,ScalaToolsSnapshots

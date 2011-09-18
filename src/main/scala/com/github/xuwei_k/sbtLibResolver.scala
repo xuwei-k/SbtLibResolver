@@ -148,14 +148,18 @@ object SbtLibPlugin extends sbt.Plugin{
 
   val Config = config("sbt-lib-resolver") extend (Runtime)
 
-  override lazy val settings: Seq[sbt.Project.Setting[_]] = inConfig(Config)(Seq(
-    libs <<= (streams) map { s =>
-      getLibraryJarNames.foreach(s.log.info(_))
-    }  
-    ,
-    resolveLibs <<= (streams) map { s =>
-      printResults(resolveLibArtifacts( s.log ),s.log)
-    }
+  override lazy val settings: Seq[sbt.Project.Setting[_]] = inConfig(Config)(
+    Seq(
+      libs <<= (streams) map { s =>
+        getLibraryJarNames.foreach(s.log.info(_))
+      }  
+      ,
+      resolveLibs <<= (streams) map { s =>
+        printResults(resolveLibArtifacts( s.log ),s.log)
+      }
+      ,commands ++= Seq(
+        Command.command("hello"){s => println("hello");s}
+      )
     )
   )
 /*
