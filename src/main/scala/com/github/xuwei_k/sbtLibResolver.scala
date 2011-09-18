@@ -144,7 +144,7 @@ object SbtLibPlugin extends sbt.Plugin{
 
   lazy val resolveLib = InputKey[Unit]("resolve-lib","resolve-lib")
 
-  lazy val resolveClass = TaskKey[Unit]("resolve-class")
+  lazy val resolveClass = InputKey[Unit]("resolve-class")
 
   val Config = config("sbt-lib-resolver") extend (Runtime)
 
@@ -158,7 +158,7 @@ object SbtLibPlugin extends sbt.Plugin{
         printResults(resolveLibArtifacts( s.log ),s.log)
       }
       ,
-      resolveLib <<= inputTask { (a: TaskKey[Seq[String]]) =>
+      resolveLib <<= inputTask { a: TaskKey[Seq[String]] =>
         (a,streams) map { (args,s) =>
           val log = s.log
           if(args.length == 1){
@@ -167,27 +167,23 @@ object SbtLibPlugin extends sbt.Plugin{
             print("Usage: resolve-lib <jar name>.jar") 
         } //completeWith getLibraryJarNames.toSeq
       }
+      ,
+      resolveClass <<= inputTask { a: TaskKey[Seq[String]] =>
+        (a,streams) map { (args,s) =>
+          val log = s.log
+          if(args.length > 0){
+            log.info("Only 100 artifacts will be displayed per request. If more artifacts are found, go to another page: resolve-class <class name> <page of results>")
+            val pageNum = if( args.length > 1) args(1).toInt else 1
+
+            printResults(
+              resolveArtifactByClass(args(0),pageNum,log).map(Right.apply)
+              ,log
+            )
+          }else
+             println("Usage: resolve-class <class name> <page of results>")
+        }
+      }
     )
   )
-/*
-  lazy val resolveLib = task { args =>
-    if(args.length == 1){
-      printResults(resolveArtifactsByJarName(args(0)).map(Right(_)))
-      task { None }
-    }else
-      task { Some("Usage: resolve-lib <jar name>.jar") }
-  } completeWith getLibraryJarNames.toSeq
-
-  lazy val resolveClass = task { args =>
-    if(args.length > 0){
-      log.info("Only 100 artifacts will be displayed per request. If more artifacts are found, go to another page: resolve-class <class name> <page of results>")
-      printResults(resolveArtifactByClass(args(0), 
-          if(args.length > 1) args(1).toInt else 1      
-      ).map(Right(_)))
-      task { None }
-    }else
-      task { Some("Usage: resolve-class <class name> <page of results>") }
-  }  
- */ 
 }
 
