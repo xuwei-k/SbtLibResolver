@@ -1,4 +1,3 @@
 # SbtLibPlugin
 
-proting https://github.com/remeniuk/SBT-Library-Resolver
-
+* proting https://github.com/remeniuk/SBT-Library-Resolver

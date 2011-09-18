@@ -2,14 +2,10 @@ package com.github.xuwei_k
 
 import sbt._
 import sbt.Keys._
-import com.gargoylesoftware.htmlunit.{BrowserVersion,WebClient}
+import com.gargoylesoftware.htmlunit.{WebClient}
 import com.gargoylesoftware.htmlunit.html._
 import java.io.{BufferedWriter,File}
-import java.net.InetAddress
-import java.util.Properties
-import org.apache.commons.io.output.FileWriterWithEncoding
 import scala.xml._
-import com.gargoylesoftware.htmlunit.xml.XmlPage
 import scala.actors.Futures._
 import org.apache.commons.logging.LogFactory
 
