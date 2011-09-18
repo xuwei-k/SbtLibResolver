@@ -1,0 +1,15 @@
+project/boot/*
+project/plugins
+project/target/*
+target/*
+*.orig
+*.ipr
+*.iml
+*.iws
+*.swp
+*.jar
+*.class
+*.bat
+*~
+.sbtrc
+
