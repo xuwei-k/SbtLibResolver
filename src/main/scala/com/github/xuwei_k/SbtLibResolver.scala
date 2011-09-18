@@ -14,7 +14,7 @@ case class ResolvedArtifact(groupId: String, artifactId: String, version: String
   def isSame(another: (String, String)) = another._1 == groupId && another._2 == artifactId
 }
 
-object SbtLibPlugin extends sbt.Plugin{
+object SbtLibResolver extends sbt.Plugin{
   
   // Needed to supress HtmlUnit warnings
   LogFactory.getFactory.setAttribute("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.NoOpLog")  
