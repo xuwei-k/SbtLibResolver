@@ -142,7 +142,7 @@ object SbtLibPlugin extends sbt.Plugin{
 
   lazy val resolveLibs = TaskKey[Unit]("resolve-libs")
 
-  lazy val resolveLib = TaskKey[Unit]("resolve-lib")
+  lazy val resolveLib = InputKey[Unit]("resolve-lib","resolve-lib")
 
   lazy val resolveClass = TaskKey[Unit]("resolve-class")
 
@@ -157,9 +157,16 @@ object SbtLibPlugin extends sbt.Plugin{
       resolveLibs <<= (streams) map { s =>
         printResults(resolveLibArtifacts( s.log ),s.log)
       }
-      ,commands ++= Seq(
-        Command.command("hello"){s => println("hello");s}
-      )
+      ,
+      resolveLib <<= inputTask { (a: TaskKey[Seq[String]]) =>
+        (a,streams) map { (args,s) =>
+          val log = s.log
+          if(args.length == 1){
+            printResults(resolveArtifactsByJarName(args(0),log).map(Right(_)),log)
+          }else
+            print("Usage: resolve-lib <jar name>.jar") 
+        } //completeWith getLibraryJarNames.toSeq
+      }
     )
   )
 /*
